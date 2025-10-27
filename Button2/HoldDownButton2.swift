@@ -79,7 +79,7 @@ struct HoldDownButton2: View {
 
     var body: some View {
         VStack {
-            Text(text)
+            Text("\(buttonStatus.rawValue)")
                 .padding(.vertical, paddingVertical)
                 .padding(.horizontal, paddingHorizontal)
                 .background {
@@ -92,7 +92,7 @@ struct HoldDownButton2: View {
                                 Rectangle()
                                     .fill(loadingTint)
                                     .frame(width: size.width * holdTimer.progress)
-                                    .animation(.linear(duration: 0.1), value: holdTimer.progress) // Fortschrittswerts flüssig animiert
+                                    .animation(.linear(duration: 0.1), value: holdTimer.progress)
                                     .transition(.opacity)
                             }
                         }
@@ -102,8 +102,7 @@ struct HoldDownButton2: View {
                 .contentShape(Capsule())
                 .scaleEffect(isHolding ? scale : 1)
                 .animation(.spring(response: 0.25, dampingFraction: 0.7), value: isHolding)
-                .gesture(dragGesture)
-                .simultaneousGesture(longPressGesture)
+                .gesture(tapGesture.simultaneously(with: longPressGesture))
                 .accessibilityLabel(Text(text))
                 .accessibilityValue(Text("Fortschritt \(Int(holdTimer.progress * 100)) Prozent"))
                 .accessibilityAddTraits(.isButton)
@@ -122,29 +121,28 @@ struct HoldDownButton2: View {
         }
     }
     
-    var dragGesture: some Gesture {
-        DragGesture()
-            .onChanged { _ in
-                isHolding = true
-            }
-            .onEnded { _ in
-                guard !isComplete else { return }
-                holdTimer.reset()
-                withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
-                    isComplete = false
+    // Swift
+    var tapGesture: some Gesture {
+        TapGesture()
+            .onEnded {
+                if buttonStatus == .start {
+                    buttonStatus = .pause
+                    holdTimer.stop()
+                } else {
+                    buttonStatus = .start
+                    holdTimer.start(duration: duration)
                 }
-                isHolding = false
-                buttonStatus = (buttonStatus == .start) ? .pause : .stop
+                withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
+                    isHolding = false
+                }
             }
     }
-    
+
     var longPressGesture: some Gesture {
         LongPressGesture(minimumDuration: duration)
-            .onChanged { holding in
+            .onChanged { _ in
+                isHolding = true
                 isComplete = false
-                holdTimer.reset()
-                isHolding = holding
-                startHold()
             }
             .onEnded { success in
                 isHolding = false
@@ -152,7 +150,7 @@ struct HoldDownButton2: View {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isComplete = success
                 }
-                buttonStatus = success ? .pause : .start
+                buttonStatus = .stop
                 if success {
                     action()
                 }
@@ -167,7 +165,7 @@ struct HoldDownButton2: View {
 
 #Preview {
     HoldDownButton2(
-        text: "Hold to increase",
+        text: "Start",
         duration: 2,
         background: .black,
         loadingTint: .white.opacity(0.3)
