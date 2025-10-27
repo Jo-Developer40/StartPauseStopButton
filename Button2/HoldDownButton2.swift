@@ -25,18 +25,28 @@ public enum ButtonStatus2: String {
             return false
         }
     }
-    public var currentBackground: Color {
-            switch self {
-            case .start:
-                return .green
-            case .pause:
-                return .orange
-            case .stop:
-                return .red
-            case .ready:
-                return .blue
-            }
+    func currentBackground(colors: ButtonColors) -> Color {
+        switch self {
+        case .start: return colors.start
+        case .pause: return colors.pause
+        case .stop: return colors.stop
+        case .ready: return colors.ready
         }
+    }
+}
+    
+struct ButtonColors {
+    var start: Color
+    var pause: Color
+    var stop: Color
+    var ready: Color
+}
+
+struct ButtonTexts {
+    var start: String
+    var pause: String
+    var stop: String
+    var ready: String
 }
 
 class HoldTimer: ObservableObject {
@@ -84,23 +94,34 @@ struct HoldDownButton2<ButtonContent: View>: View {
     var paddingHorizontal: CGFloat = 25 /// Horizontale padding
     var background: Color = .gray /// Background Button
     var loadingTint: Color = .gray /// Colors of Progress bar
-    //var action: () -> Void = {} /// action, which is executed when LongPress is successful
+    var buttonColors: ButtonColors = ButtonColors(
+    start: .green,
+    pause: .orange,
+    stop: .red,
+    ready: .blue
+)
+var buttonTexts: ButtonTexts = ButtonTexts(
+    start: "Running",
+    pause: "Pause",
+    stop: "Stopped",
+    ready: "Bereit"
+)
     @ViewBuilder var buttonContent: () -> ButtonContent
     
     @StateObject private var holdTimer = HoldTimer() /// Timer for Progress bar
     @State private var isHolding = false /// hold Button (for Animation)
     @State private var buttonStatus: ButtonStatus2 = .ready // Initialstatus auf "Bereit"
-
+    
     var body: some View {
         VStack {
-            Text("\(buttonStatus.rawValue)") // Button
+            Text(textForStatus(buttonStatus)) // Button
                 .padding(.vertical, paddingVertical)
                 .padding(.horizontal, paddingHorizontal)
                 .frame(width: 150, height: 40)
                 .background {
                     ZStack(alignment: .leading) {
                         Rectangle() // Button Background
-                            .fill(buttonStatus.currentBackground)
+                            .fill(buttonStatus.currentBackground(colors: buttonColors))
                         if buttonStatus == .start || buttonStatus == .pause || buttonStatus == .ready {
                             Rectangle() // progress bar
                                 .fill(loadingTint)
@@ -128,7 +149,16 @@ struct HoldDownButton2<ButtonContent: View>: View {
             buttonStatus = .ready
         }
     }
-
+    
+    func textForStatus(_ status: ButtonStatus2) -> String {
+            switch status {
+            case .start: return buttonTexts.start
+            case .pause: return buttonTexts.pause
+            case .stop: return buttonTexts.stop
+            case .ready: return buttonTexts.ready
+            }
+        }
+    
     /// Tap-Geste: Start/Pause umschalten
     var tapGesture: some Gesture {
         TapGesture()

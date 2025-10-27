@@ -23,34 +23,54 @@ struct ContentView: View {
                 VStack(spacing: 45) {
                     Text("\(count)")
                         .font(.largeTitle.bold())
-                    HoldDownButton2(duration: 2, loadingTint: .white.opacity(0.3)) {
-                        EmptyView()
+                    HoldDownButton2(
+                        duration: 2,
+                        paddingVertical: 12,
+                        paddingHorizontal: 25,
+                        background: .blue,
+                        loadingTint: .white.opacity(0.3),
+                        buttonColors: ButtonColors(
+                            start: .green,
+                            pause: .orange,
+                            stop: .red,
+                            ready: .blue
+                        ),
+                        buttonTexts: ButtonTexts(
+                            start: "Los!",
+                            pause: "Warten",
+                            stop: "Anhalten",
+                            ready: "Bereit"
+                        ),
+                        buttonContent: {
+                            Text("Button")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                        }
+                    )
+                }
+                .navigationTitle("Hold Down Button")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationButton(path: $path,title: "Button", icon: "chevron.right", destination: .startPauseStopButtonView)
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        NavigationButton(path: $path,icon: "gearshape", destination: .settingsView)
                     }
                 }
-                .padding()
-                
-            }
-            .navigationTitle("Hold Down Button")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationButton(path: $path,title: "Button", icon: "chevron.right", destination: .startPauseStopButtonView)
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                   NavigationButton(path: $path,icon: "gearshape", destination: .settingsView)
-                }
-            }
-            .navigationDestination(for: AppView.self) { view in
-                switch view {
-                case .startPauseStopButtonView:
-                    StartPauseStopButtonView_(path: $path, count: $count)
-                case .settingsView:
-                    SettingsView_(path: $path)
+                .navigationDestination(for: AppView.self) { view in
+                    switch view {
+                    case .startPauseStopButtonView:
+                        StartPauseStopButtonView_(path: $path, count: $count)
+                    case .settingsView:
+                        SettingsView_(path: $path)
+                    }
                 }
             }
         }
     }
 }
+
 
     /// NavigationButton-Hilfsfunktion
 struct NavigationButton: View {
