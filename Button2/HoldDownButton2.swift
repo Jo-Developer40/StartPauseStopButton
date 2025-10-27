@@ -84,7 +84,7 @@ struct HoldDownButton2<ButtonContent: View>: View {
     var paddingHorizontal: CGFloat = 25 /// Horizontale padding
     var background: Color = .gray /// Background Button
     var loadingTint: Color = .gray /// Colors of Progress bar
-    var action: () -> Void = {} /// action, which is executed when LongPress is successful
+    //var action: () -> Void = {} /// action, which is executed when LongPress is successful
     @ViewBuilder var buttonContent: () -> ButtonContent
     
     @StateObject private var holdTimer = HoldTimer() /// Timer for Progress bar
@@ -102,7 +102,7 @@ struct HoldDownButton2<ButtonContent: View>: View {
                         Rectangle() // Button Background
                             .fill(buttonStatus.currentBackground)
                         if buttonStatus == .start || buttonStatus == .pause || buttonStatus == .ready {
-                            Rectangle() // Animation progress bar
+                            Rectangle() // progress bar
                                 .fill(loadingTint)
                                 .frame(width: 150 * holdTimer.progress, height: 40, alignment: .leading)
                                 .animation(.linear(duration: 0.1), value: holdTimer.progress)
@@ -158,9 +158,6 @@ struct HoldDownButton2<ButtonContent: View>: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         buttonStatus = .ready
                     }
-                if success {
-                    action()
-                }
             }
     }
 }
