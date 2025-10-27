@@ -1,11 +1,9 @@
 //
 //  ContentView.swift
-//  KS_LongPressButtpn
+//  Button2
 //
-//  Template by Akbarshah Jumanazarov on 3/21/24
+//  Created by Juergen Schulz on 27.10.25.
 //
-
-
 
 import SwiftUI
 
@@ -25,15 +23,9 @@ struct ContentView: View {
                 VStack(spacing: 45) {
                     Text("\(count)")
                         .font(.largeTitle.bold())
-                    HoldDownButton2(
-                        text: "Hold to increase",
-                        duration: 2,
-                        background: .black,
-                        loadingTint: .white.opacity(0.3)
-                    ) {
-                        count += 1
+                    HoldDownButton2(duration: 2, loadingTint: .white.opacity(0.3)) {
+                        EmptyView()
                     }
-                    .foregroundStyle(.white)
                 }
                 .padding()
                 
@@ -113,7 +105,6 @@ struct SettingsView_: View {
         }
         .navigationTitle("Settings")
         .toolbar {
-            // Weiter --> StartPauseStopButtonView
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     path.removeAll()
