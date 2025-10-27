@@ -21,6 +21,16 @@ public enum ButtonStatus2: String {
             return false
         }
     }
+    public var currentBackground: Color {
+            switch self {
+            case .start:
+                return .green
+            case .pause:
+                return .yellow
+            case .stop:
+                return .red
+            }
+        }
 }
 
 class HoldTimer: ObservableObject {
@@ -62,33 +72,36 @@ class HoldTimer: ObservableObject {
     }
 }
 
+// Swift
+/// Ein Button mit Start/Pause/Stop-Status und Ladebalken.
+/// Kurzes Tippen startet/pausiert, langes Drücken stoppt und löst eine Aktion aus.
 struct HoldDownButton2: View {
-    var text: String
-    var duration: CGFloat = 2
-    var paddingVertical: CGFloat = 12
-    var paddingHorizontal: CGFloat = 25
-    var scale: CGFloat = 0.95
-    var background: Color = .gray
-    var loadingTint: Color = .blue
-    var action: () -> ()
-    
-    @StateObject private var holdTimer = HoldTimer()
-    @State private var isHolding = false
-    @State private var isComplete = false
-    @State private var buttonStatus: ButtonStatus2 = .stop
+    var text: String /// Button-Text
+    var duration: CGFloat = 2 /// Dauer für den Fortschritt (LongPress)
+    var paddingVertical: CGFloat = 12 /// Vertikales Padding des Buttons
+    var paddingHorizontal: CGFloat = 25 /// Horizontales Padding des Buttons
+    var scale: CGFloat = 0.95 /// Skalierung beim Halten
+    var background: Color = .gray /// Hintergrundfarbe des Buttons
+    var loadingTint: Color = .blue /// Farbe des Ladebalkens
+    var action: () -> Void = {} /// Aktion, die beim erfolgreichen LongPress ausgeführt wird
+
+    @StateObject private var holdTimer = HoldTimer() /// Timer für den Ladebalken
+    @State private var isHolding = false /// Button wird gehalten (für Animation)
+    @State private var buttonStatus: ButtonStatus2 = .stop /// Status des Buttons (Start/Pause/Stop)
 
     var body: some View {
         VStack {
+            // Button mit Statusanzeige und Ladebalken
             Text("\(buttonStatus.rawValue)")
                 .padding(.vertical, paddingVertical)
                 .padding(.horizontal, paddingHorizontal)
                 .background {
                     ZStack(alignment: .leading) {
                         Rectangle()
-                            .fill(background)
+                            .fill(buttonStatus.currentBackground)
                         GeometryReader { proxy in
                             let size = proxy.size
-                            if !isComplete {
+                            if buttonStatus == .start {
                                 Rectangle()
                                     .fill(loadingTint)
                                     .frame(width: size.width * holdTimer.progress)
@@ -103,25 +116,28 @@ struct HoldDownButton2: View {
                 .scaleEffect(isHolding ? scale : 1)
                 .animation(.spring(response: 0.25, dampingFraction: 0.7), value: isHolding)
                 .gesture(tapGesture.simultaneously(with: longPressGesture))
+                // Accessibility für VoiceOver
                 .accessibilityLabel(Text(text))
                 .accessibilityValue(Text("Fortschritt \(Int(holdTimer.progress * 100)) Prozent"))
                 .accessibilityAddTraits(.isButton)
                 .accessibilityAction(named: Text("Gedrückt halten für Aktion")) {
                     startHold()
                 }
+            // Statusanzeige unterhalb des Buttons
             Text("Status: \(buttonStatus.rawValue)")
                 .font(.headline)
                 .foregroundStyle(.red)
                 .background(.white)
                 .padding(.top, 8)
         }
+        // Initialisierung beim Anzeigen
         .onAppear {
             holdTimer.reset()
             buttonStatus = .stop
         }
     }
-    
-    // Swift
+
+    /// Tap-Geste: Start/Pause umschalten
     var tapGesture: some Gesture {
         TapGesture()
             .onEnded {
@@ -138,29 +154,27 @@ struct HoldDownButton2: View {
             }
     }
 
+    /// LongPress-Geste: Stop setzen und Aktion ausführen
     var longPressGesture: some Gesture {
         LongPressGesture(minimumDuration: duration)
             .onChanged { _ in
                 isHolding = true
-                isComplete = false
             }
             .onEnded { success in
                 isHolding = false
                 holdTimer.stop()
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isComplete = success
-                }
                 buttonStatus = .stop
                 if success {
                     action()
                 }
             }
     }
-    
+
+    /// Startet den Hold-Timer (für Accessibility)
     private func startHold() {
-            buttonStatus = .start
-            holdTimer.start(duration: duration)
-        }
+        buttonStatus = .start
+        holdTimer.start(duration: duration)
+    }
 }
 
 #Preview {
