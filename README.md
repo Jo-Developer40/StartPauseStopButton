@@ -11,10 +11,8 @@ A SwiftUI demo app for a customizable “Hold Down Button” with status display
 ![sample](Button2/docs.docc/FlowChart1.png)
 
 <p align="center">
-  <img src="[docs/FlowChart1.png](https://github.com/Jo-Developer40/StartPauseStopButton2/blob/finale/Button2/docs.docc/FlowChart1.png)" width="450">
+  <img src="Button2/docs/FlowChart1.png" width="450">
 </p>
-
-![sample](https://github.com/Jo-Developer40/StartPauseStopButton2/blob/finale/Button2/docs.docc/FlowChart1.png)
 
 ## Main components
 
