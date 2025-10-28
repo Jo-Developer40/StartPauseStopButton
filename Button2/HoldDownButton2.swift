@@ -4,50 +4,41 @@
 //
 //  Created by Juergen Schulz on 27.10.25.
 //
-//  Ein Button mit Start/Pause/Stop-Status und Ladebalken.
-//  Kurzes Tippen startet/pausiert, langes Drücken stoppt und löst eine Aktion aus.
+//  A button with start/pause/stop status and a loading bar.
+//  A short tap starts/pauses, a long press stops and triggers an action.
 
 
 import SwiftUI
 import Combine
 
+// Button status enumeration
 public enum ButtonStatus2: String {
     case start = "Running"
-    case pause = "Pause"
-    case stop = "Stopped"
-    case ready = "Bereit"
+        case pause = "Pause"
+        case stop = "Stopped"
+        case ready = "Bereit"
     
     public var isActive: Bool {
         switch self {
-        case .start, .pause:
-            return true
-        case .stop, .ready:
-            return false
+        case .start, .pause: return true
+        case .stop, .ready: return false
         }
     }
-    func currentBackground(colors: ButtonColors) -> Color {
-        switch self {
-        case .start: return colors.start
-        case .pause: return colors.pause
-        case .stop: return colors.stop
-        case .ready: return colors.ready
-        }
-    }
-}
-    
-struct ButtonColors {
-    var start: Color
-    var pause: Color
-    var stop: Color
-    var ready: Color
 }
 
-struct ButtonTexts {
-    var start: String
-    var pause: String
-    var stop: String
-    var ready: String
-}
+let defaultStatusTexts: [ButtonStatus2: String] = [
+    .start: "Running!",
+    .pause: "Pause!",
+    .stop: "Stopped!",
+    .ready: "Ready!"
+]
+
+let defaultStatusColors: [ButtonStatus2: Color] = [
+    .start: .green,
+    .pause: .yellow,
+    .stop: .red,
+    .ready: .blue
+]
 
 class HoldTimer: ObservableObject {
     @Published private(set) var progress: CGFloat = 0
@@ -92,20 +83,13 @@ struct HoldDownButton2<ButtonContent: View>: View {
     var duration: CGFloat = 3 /// duration Progress bar
     var paddingVertical: CGFloat = 12 /// Verticale padding
     var paddingHorizontal: CGFloat = 25 /// Horizontale padding
-    var background: Color = .gray /// Background Button
     var loadingTint: Color = .gray /// Colors of Progress bar
-    var buttonColors: ButtonColors = ButtonColors(
-    start: .green,
-    pause: .orange,
-    stop: .red,
-    ready: .blue
-)
-var buttonTexts: ButtonTexts = ButtonTexts(
-    start: "Running",
-    pause: "Pause",
-    stop: "Stopped",
-    ready: "Bereit"
-)
+    ///
+    // External specifications for texts and colors
+    var statusTexts: [ButtonStatus2: String] = defaultStatusTexts
+    var statusColors: [ButtonStatus2: Color] = defaultStatusColors
+    var statusTextColor: Color = .white
+
     @ViewBuilder var buttonContent: () -> ButtonContent
     
     @StateObject private var holdTimer = HoldTimer() /// Timer for Progress bar
@@ -114,14 +98,15 @@ var buttonTexts: ButtonTexts = ButtonTexts(
     
     var body: some View {
         VStack {
-            Text(textForStatus(buttonStatus)) // Button
+            Text(statusTexts[buttonStatus] ?? "") // Button
+                .foregroundColor(statusTextColor)
                 .padding(.vertical, paddingVertical)
                 .padding(.horizontal, paddingHorizontal)
                 .frame(width: 150, height: 40)
                 .background {
                     ZStack(alignment: .leading) {
                         Rectangle() // Button Background
-                            .fill(buttonStatus.currentBackground(colors: buttonColors))
+                            .fill(statusColors[buttonStatus] ?? .gray)
                         if buttonStatus == .start || buttonStatus == .pause || buttonStatus == .ready {
                             Rectangle() // progress bar
                                 .fill(loadingTint)
@@ -136,7 +121,8 @@ var buttonTexts: ButtonTexts = ButtonTexts(
                 .scaleEffect(isHolding ? 0.95 : 1)
                 .animation(.spring(response: 0.25, dampingFraction: 0.7), value: isHolding)
                 .gesture(tapGesture.exclusively(before: longPressGesture))
-            // Statusanzeige unterhalb des Buttons
+            
+            // Statusanzeige unterhalb des Buttons (optional)
             Text("Status: \(buttonStatus.rawValue)")
                 .font(.headline)
                 .foregroundStyle(.red)
@@ -150,16 +136,7 @@ var buttonTexts: ButtonTexts = ButtonTexts(
         }
     }
     
-    func textForStatus(_ status: ButtonStatus2) -> String {
-            switch status {
-            case .start: return buttonTexts.start
-            case .pause: return buttonTexts.pause
-            case .stop: return buttonTexts.stop
-            case .ready: return buttonTexts.ready
-            }
-        }
-    
-    /// Tap-Geste: Start/Pause umschalten
+    /// Tap-Geste: Start/Pause switching
     var tapGesture: some Gesture {
         TapGesture()
             .onEnded {
@@ -173,7 +150,7 @@ var buttonTexts: ButtonTexts = ButtonTexts(
             }
     }
 
-    /// LongPress-Geste: Stop setzen und Aktion ausführen
+    /// LongPress-Geste: Set stop
     var longPressGesture: some Gesture {
         LongPressGesture(minimumDuration: duration)
             .onChanged { _ in
@@ -195,7 +172,22 @@ var buttonTexts: ButtonTexts = ButtonTexts(
 #Preview {
     HoldDownButton2(
         duration: 3,
-        loadingTint: .white.opacity(0.3)) {
-            EmptyView()
-        }
+        loadingTint: .white.opacity(0.3),
+        statusTextColor: .white,
+        /*statusTexts: [
+            .start: "Start",
+            .pause: "Pause",
+            .stop: "Stop",
+            .ready: "Bereit"
+        ],
+         statusColors: [
+            .start: .green,
+            .pause: .orange,
+            .stop: .red,
+            .ready: .gray
+        ]
+         */
+    ) {
+        EmptyView()
+    }
 }
