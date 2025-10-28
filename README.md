@@ -9,7 +9,7 @@ A SwiftUI demo app for a customizable “Hold Down Button” with status display
 - **Navigation**: NavigationStack with sample pages (demo, settings) and toolbar buttons.
 
 <p align="center">
-  <img src="Button2/docs.docc/HoldDownButton.gif" width="300">
+  <img src="Button2/docs.docc/Resources/HoldDownButton.gif" width="300">
 </p>
 
 
