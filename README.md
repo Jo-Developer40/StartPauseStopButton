@@ -8,7 +8,7 @@ A SwiftUI demo app for a customizable “Hold Down Button” with status display
 - **Customizable colors and texts**: Default values for status texts and colors can be changed centrally or overwritten on the button.
 - **Navigation**: NavigationStack with sample pages (demo, settings) and toolbar buttons.
 
-<img src="[Buttom2/docs/FlowChart1.gif](https://github.com/Jo-Developer40/StartPauseStopButton2/blob/finale/Button2/docs.docc/HoldDownButton.gif)" width="200" height="200"/>
+![UI Overview](docs/FlowChart1.png)
 
 ## Main components
 
