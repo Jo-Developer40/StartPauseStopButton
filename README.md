@@ -41,4 +41,8 @@ The app displays a button with status display and progress bar. The toolbar can 
 1. Open the project in Xcode.
 2. Run (`Cmd+R`).
 
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
 ---
