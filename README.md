@@ -37,12 +37,11 @@ onStateChange: { status in
    }
    
 Example of use the ButtonStatus: 
-`
+
 func handleButtonStatus(_ status: ButtonStatus2) {
         // You can perform any actions here
         print(“Status changed: \(status.rawValue)”)
-    }
-`
+}
 
 
 ## Requirements
