@@ -138,7 +138,6 @@ struct HoldDownButton2<ButtonContent: View>: View {
             holdTimer.reset()
             buttonStatus = .ready
         }
-        //.onChange(of: buttonStatus) { newStatus in onStateChange(newStatus)}
         .onChange(of: buttonStatus) {
             onStateChange(buttonStatus)
         }
