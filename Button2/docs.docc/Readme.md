@@ -22,7 +22,7 @@ A SwiftUI demo app for a customizable “Hold Down Button” with status display
 Customize default values for texts and colors in the dictionaries `defaultStatusTexts` and `defaultStatusColors`. Additional UI elements can be expanded in the same way.
 
 ## Preview
-<img src="Button2/docs.docc/HoldDownButton.gif" width="200" height="900"/>
+<img src="Button2/docs.docc/HoldDownButton.png" width="300"/>
 
 The app displays a button with status display and progress bar. The toolbar can be used to navigate to demo and settings pages.
 
@@ -37,4 +37,8 @@ The app displays a button with status display and progress bar. The toolbar can 
 1. Open the project in Xcode.
 2. Run (`Cmd+R`).
 
----
+
+## License
+
+## License
+This project is licensed under the Apache License. For more information, see the `LICENSE` file.
