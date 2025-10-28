@@ -1,6 +1,7 @@
 # HoldDownButton2 Demo App
 
-A SwiftUI demo app for a customizable “Hold Down Button” with status display, progress bar, and navigation.
+A SwiftUI demo app for a customizable “Hold Down Button” with status display, progress bar, and AppNavigation.
+The toolbar can be used to navigate to demo and settings pages.
 
 ## Features
 
@@ -20,17 +21,29 @@ A SwiftUI demo app for a customizable “Hold Down Button” with status display
 - `NavigationButton`: Auxiliary view for NavigationStack.
 - `DemoView_` and `SettingsView_`: Example pages for navigation.
 
-- ## Function
+## Function
+  
 <p align="center">
   <img src="Button2/docs.docc/Resources/FlowChart1.png" width="300">
 </p>
 
 
-## Customization
+## How to use
 
-Customize default values for texts and colors in the dictionaries `defaultStatusTexts` and `defaultStatusColors`. Additional UI elements can be expanded in the same way.
+The button returns the status with
+...
+onStateChange: { status in
+   handleButtonStatus(status)
+   }
+   
+Example of use the ButtonStatus: 
+`
+func handleButtonStatus(_ status: ButtonStatus2) {
+        // You can perform any actions here
+        print(“Status changed: \(status.rawValue)”)
+    }
+`
 
-The app displays a button with status display and progress bar. The toolbar can be used to navigate to demo and settings pages.
 
 ## Requirements
 
@@ -40,7 +53,8 @@ The app displays a button with status display and progress bar. The toolbar can 
 
 ## Getting started
 
-1. Open the project in Xcode.
-2. Run (`Cmd+R`).
+1. clone from GitHub
+2. Open the project in Xcode.
+3. Run (`Cmd+R`).
 
 ---
