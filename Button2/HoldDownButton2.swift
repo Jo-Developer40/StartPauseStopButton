@@ -90,11 +90,13 @@ struct HoldDownButton2<ButtonContent: View>: View {
     var statusColors: [ButtonStatus2: Color] = defaultStatusColors
     var statusTextColor: Color = .white
 
-    @ViewBuilder var buttonContent: () -> ButtonContent
+    var onStateChange: (ButtonStatus2) -> Void = { _ in } /// Callback on state change
+    @ViewBuilder var buttonContent: () -> ButtonContent /// Custom button content (not used in this version)
     
     @StateObject private var holdTimer = HoldTimer() /// Timer for Progress bar
     @State private var isHolding = false /// hold Button (for Animation)
-    @State private var buttonStatus: ButtonStatus2 = .ready // Initialstatus auf "Bereit"
+    @State private var buttonStatus: ButtonStatus2 = .ready // Transferring status to another app part.
+    // Example: via Binding: @Binding var buttonStatus: ButtonStatus2
     
     var body: some View {
         VStack {
@@ -123,16 +125,21 @@ struct HoldDownButton2<ButtonContent: View>: View {
                 .gesture(tapGesture.exclusively(before: longPressGesture))
             
             // Statusanzeige unterhalb des Buttons (optional)
-            Text("Status: \(buttonStatus.rawValue)")
-                .font(.headline)
-                .foregroundStyle(.red)
-                .background(.white)
-                .padding(.top, 8)
+            /*
+             Text("Status: \(buttonStatus.rawValue)")
+             .font(.headline)
+             .foregroundStyle(.red)
+             .background(.white)
+             .padding(.top, 8)
+             */
         }
         // Initialisierung beim Anzeigen
         .onAppear {
             holdTimer.reset()
             buttonStatus = .ready
+        }
+        .onChange(of: buttonStatus) { newStatus in
+            onStateChange(newStatus)
         }
     }
     

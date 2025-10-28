@@ -14,10 +14,12 @@ case demoView
 case settingsView
 }
 
+
 /// MainView with NavigationStack and Toolbar
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var path: [AppView] = []
+    //@Binding var buttonStatus: ButtonStatus2
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -29,21 +31,24 @@ struct ContentView: View {
                         statusTextColor: .white,
                         /* Optional parameters
                          statusTexts: [
-                            .start: "Start",
-                            .pause: "Pause",
-                            .stop: "Stop",
-                            .ready: "Bereit"
-                        ],
+                         .start: "Start",
+                         .pause: "Pause",
+                         .stop: "Stop",
+                         .ready: "Bereit"
+                         ],
                          statusColors: [
-                            .start: .green,
-                            .pause: .orange,
-                            .stop: .red,
-                            .ready: .gray
-                        ]
+                         .start: .green,
+                         .pause: .orange,
+                         .stop: .red,
+                         .ready: .gray
+                         ]
                          */
-                    ) {
-                            EmptyView()
+                        onStateChange: { status in
+                            handleButtonStatus(status)
                         }
+                    ) {
+                        EmptyView()
+                    }
                 }
                 .navigationTitle("Hold Down Button")
                 .navigationBarTitleDisplayMode(.inline)
@@ -65,6 +70,10 @@ struct ContentView: View {
                 }
             }
         }
+    }
+    func handleButtonStatus(_ status: ButtonStatus2) {
+        // Hier kannst du beliebige Aktionen ausführen
+        print("Status geändert: \(status.rawValue)")
     }
 }
 
