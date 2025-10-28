@@ -10,9 +10,33 @@
 		38B779A12EAF5B9C0059BE6E /* Button2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Button2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		38A3A2972EB0D21400A975DE /* Exceptions for "Button2" folder in "Button2" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				README.md,
+			);
+			target = 38B779A02EAF5B9C0059BE6E /* Button2 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		38A3A2982EB0D21400A975DE /* Exceptions for "Button2" folder in "Compile Sources" phase from "Button2" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 38B7799D2EAF5B9C0059BE6E /* Sources */;
+			membershipExceptions = (
+				README.md,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		38B779A32EAF5B9C0059BE6E /* Button2 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				38A3A2972EB0D21400A975DE /* Exceptions for "Button2" folder in "Button2" target */,
+				38A3A2982EB0D21400A975DE /* Exceptions for "Button2" folder in "Compile Sources" phase from "Button2" target */,
+			);
 			path = Button2;
 			sourceTree = "<group>";
 		};
@@ -272,10 +296,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Debug;
@@ -311,10 +336,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Release;

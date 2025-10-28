@@ -26,7 +26,7 @@ struct ContentView: View {
                     HoldDownButton2(
                         duration: 3,
                         loadingTint: .white.opacity(0.3),
-                        statusTextColor: .yellow,
+                        statusTextColor: .white,
                         /* Optional parameters
                          statusTexts: [
                             .start: "Start",
