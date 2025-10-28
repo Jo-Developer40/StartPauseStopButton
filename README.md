@@ -8,7 +8,7 @@ A SwiftUI demo app for a customizable “Hold Down Button” with status display
 - **Customizable colors and texts**: Default values for status texts and colors can be changed centrally or overwritten on the button.
 - **Navigation**: NavigationStack with sample pages (demo, settings) and toolbar buttons.
 
-<img src="docs/FlowChart1.gif" width="200" height="200"/>
+<img src="Buttom2/docs/FlowChart1.gif" width="200" height="200"/>
 
 ## Main components
 
@@ -22,7 +22,7 @@ A SwiftUI demo app for a customizable “Hold Down Button” with status display
 Customize default values for texts and colors in the dictionaries `defaultStatusTexts` and `defaultStatusColors`. Additional UI elements can be expanded in the same way.
 
 ## Preview
-<img src="docs/HoldDownButton.gif" width="200" height="900"/>
+<img src="Buttom2/docs/HoldDownButton.gif" width="200" height="900"/>
 
 The app displays a button with status display and progress bar. The toolbar can be used to navigate to demo and settings pages.
 
