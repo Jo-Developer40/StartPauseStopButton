@@ -32,18 +32,18 @@ The toolbar can be used to navigate to demo and settings pages.
 
 The button returns the status with
 ```swift
+HoldDownButton2...
 ...
 onStateChange: { status in
    handleButtonStatus(status)
    }
+...
 ```
    
-### Beispiel: Verwendung
+### Example of use
 ```swift
-// Start/Pause/Stop Status-Handler
 func handleButtonStatus(_ status: ButtonStatus2) {
     // Aktionen ausführen
-    print("Status changed: \(status.rawValue)")
 }
 ```
 
