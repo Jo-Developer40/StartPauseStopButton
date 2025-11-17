@@ -60,4 +60,8 @@ func handleButtonStatus(_ status: ButtonStatus2) {
 2. Open the project in Xcode.
 3. Run (`Cmd+R`).
 
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
 ---
